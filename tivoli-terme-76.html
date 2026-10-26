@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuovo territorio 76 — TIVOLI TERME</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#00796b}
+#header{background:#00796b;color:white;padding:12px 16px;display:flex;align-items:center;gap:10px}
+#header h1{font-size:18px;font-weight:700;letter-spacing:1px}
+#header p{font-size:12px;opacity:0.8;margin-top:2px}
+#map{height:calc(100vh - 66px);width:100%}
+#nav-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00897b;color:white;border:none;border-radius:50px;padding:14px 28px;font-size:16px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+</style>
+</head>
+<body>
+<div id="header">
+  <div>
+    <h1>🗺️ TIVOLI TERME 76</h1>
+    <p>Nuovo territorio n. 76 — TIVOLI TERME</p>
+  </div>
+</div>
+<div id="map"></div>
+<button id="nav-btn" onclick="navigaVerso()">🧭 Naviga verso questo territorio</button>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var centro = [41.964625, 12.714541];
+var map = L.map('map').setView(centro, 17);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+var parti = [{"tipo":"line","coords":[[41.95802,12.7117],[41.95813,12.7118],[41.95824,12.71186],[41.95846,12.71194],[41.95849,12.71232],[41.95928,12.71846],[41.9594,12.71842],[41.95874,12.7136],[41.95867,12.71301],[41.95861,12.7125],[41.95857,12.71227],[41.95859,12.71203],[41.96589,12.71446],[41.96902,12.71367],[41.97154,12.7147],[41.97166,12.7149],[41.97189,12.71498],[41.97217,12.71536],[41.97073,12.71529],[41.96984,12.71563],[41.97002,12.71578],[41.97078,12.71547],[41.97213,12.71559],[41.97213,12.72325]]}];
+var bounds = L.latLngBounds();
+parti.forEach(function(p) {
+  var layer;
+  if (p.tipo === 'polygon') {
+    layer = L.polygon(p.coords, {color:'#00796b',fillColor:'#26a69a',fillOpacity:0.35,weight:2.5}).addTo(map);
+  } else {
+    layer = L.polyline(p.coords, {color:'#00796b',weight:5}).addTo(map);
+  }
+  bounds.extend(layer.getBounds());
+});
+if (bounds.isValid()) map.fitBounds(bounds, {padding:[30,30]});
+
+function navigaVerso() {
+  window.open('https://www.google.com/maps/dir/?api=1&destination=41.964625,12.714541', '_blank');
+}
+</script>
+</body>
+</html>

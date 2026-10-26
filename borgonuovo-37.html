@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuovo territorio 37 — BORGONUOVO</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#00796b}
+#header{background:#00796b;color:white;padding:12px 16px;display:flex;align-items:center;gap:10px}
+#header h1{font-size:18px;font-weight:700;letter-spacing:1px}
+#header p{font-size:12px;opacity:0.8;margin-top:2px}
+#map{height:calc(100vh - 66px);width:100%}
+#nav-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00897b;color:white;border:none;border-radius:50px;padding:14px 28px;font-size:16px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+</style>
+</head>
+<body>
+<div id="header">
+  <div>
+    <h1>🗺️ BORGONUOVO 37</h1>
+    <p>Nuovo territorio n. 37 — BORGONUOVO</p>
+  </div>
+</div>
+<div id="map"></div>
+<button id="nav-btn" onclick="navigaVerso()">🧭 Naviga verso questo territorio</button>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var centro = [41.950634, 12.718393];
+var map = L.map('map').setView(centro, 17);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+var parti = [{"tipo":"polygon","coords":[[41.95121,12.71738],[41.95095,12.71722],[41.94993,12.71709],[41.94961,12.71714],[41.94978,12.71819],[41.9498,12.71846],[41.94975,12.72022],[41.95106,12.72028],[41.95121,12.71738]]},{"tipo":"polygon","coords":[[41.95072,12.71754],[41.9503,12.71752],[41.95029,12.7178],[41.95071,12.71781],[41.95072,12.71754]]},{"tipo":"polygon","coords":[[41.95088,12.71783],[41.95069,12.71782],[41.95068,12.71837],[41.95086,12.71838],[41.95088,12.71783]]},{"tipo":"polygon","coords":[[41.95109,12.71833],[41.95095,12.71833],[41.95092,12.71942],[41.95105,12.71943],[41.95109,12.71833]]},{"tipo":"polygon","coords":[[41.95084,12.71948],[41.95038,12.71944],[41.95037,12.71966],[41.95083,12.71969],[41.95084,12.71948]]}];
+var bounds = L.latLngBounds();
+parti.forEach(function(p) {
+  var layer;
+  if (p.tipo === 'polygon') {
+    layer = L.polygon(p.coords, {color:'#00796b',fillColor:'#26a69a',fillOpacity:0.35,weight:2.5}).addTo(map);
+  } else {
+    layer = L.polyline(p.coords, {color:'#00796b',weight:5}).addTo(map);
+  }
+  bounds.extend(layer.getBounds());
+});
+if (bounds.isValid()) map.fitBounds(bounds, {padding:[30,30]});
+
+function navigaVerso() {
+  window.open('https://www.google.com/maps/dir/?api=1&destination=41.950634,12.718393', '_blank');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuovo territorio 16 — ALBUCCIONE</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#00796b}
+#header{background:#00796b;color:white;padding:12px 16px;display:flex;align-items:center;gap:10px}
+#header h1{font-size:18px;font-weight:700;letter-spacing:1px}
+#header p{font-size:12px;opacity:0.8;margin-top:2px}
+#map{height:calc(100vh - 66px);width:100%}
+#nav-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00897b;color:white;border:none;border-radius:50px;padding:14px 28px;font-size:16px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+</style>
+</head>
+<body>
+<div id="header">
+  <div>
+    <h1>🗺️ ALBUCCIONE 16</h1>
+    <p>Nuovo territorio n. 16 — ALBUCCIONE</p>
+  </div>
+</div>
+<div id="map"></div>
+<button id="nav-btn" onclick="navigaVerso()">🧭 Naviga verso questo territorio</button>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var centro = [41.944647, 12.696911];
+var map = L.map('map').setView(centro, 17);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+var parti = [{"tipo":"line","coords":[[41.94682,12.69481],[41.94634,12.695],[41.94606,12.69513],[41.94574,12.69525],[41.94521,12.69546],[41.94498,12.69557],[41.94505,12.69599],[41.94519,12.69692],[41.94521,12.69718],[41.94517,12.69721],[41.94513,12.69696],[41.94505,12.69634],[41.94492,12.69559],[41.94452,12.69575],[41.94473,12.69713],[41.94468,12.69715],[41.94447,12.69577],[41.94434,12.69587],[41.94425,12.6959],[41.94414,12.696],[41.94364,12.69627],[41.94301,12.6966],[41.94303,12.69671],[41.9431,12.6968],[41.94315,12.69682],[41.94325,12.69678],[41.94334,12.69671],[41.94346,12.69657],[41.94353,12.69655],[41.94358,12.69656],[41.94365,12.69664],[41.94383,12.69694],[41.94405,12.69726],[41.94434,12.69777],[41.94459,12.69819],[41.94534,12.69947],[41.94601,12.70061],[41.94716,12.70264],[41.94717,12.70267]]}];
+var bounds = L.latLngBounds();
+parti.forEach(function(p) {
+  var layer;
+  if (p.tipo === 'polygon') {
+    layer = L.polygon(p.coords, {color:'#00796b',fillColor:'#26a69a',fillOpacity:0.35,weight:2.5}).addTo(map);
+  } else {
+    layer = L.polyline(p.coords, {color:'#00796b',weight:5}).addTo(map);
+  }
+  bounds.extend(layer.getBounds());
+});
+if (bounds.isValid()) map.fitBounds(bounds, {padding:[30,30]});
+
+function navigaVerso() {
+  window.open('https://www.google.com/maps/dir/?api=1&destination=41.944647,12.696911', '_blank');
+}
+</script>
+</body>
+</html>

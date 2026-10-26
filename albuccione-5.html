@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuovo territorio 5 — ALBUCCIONE</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#00796b}
+#header{background:#00796b;color:white;padding:12px 16px;display:flex;align-items:center;gap:10px}
+#header h1{font-size:18px;font-weight:700;letter-spacing:1px}
+#header p{font-size:12px;opacity:0.8;margin-top:2px}
+#map{height:calc(100vh - 66px);width:100%}
+#nav-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00897b;color:white;border:none;border-radius:50px;padding:14px 28px;font-size:16px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+</style>
+</head>
+<body>
+<div id="header">
+  <div>
+    <h1>🗺️ ALBUCCIONE 5</h1>
+    <p>Nuovo territorio n. 5 — ALBUCCIONE</p>
+  </div>
+</div>
+<div id="map"></div>
+<button id="nav-btn" onclick="navigaVerso()">🧭 Naviga verso questo territorio</button>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var centro = [41.938903, 12.696513];
+var map = L.map('map').setView(centro, 17);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+var parti = [{"tipo":"line","coords":[[41.93986,12.69622],[41.93978,12.69605],[41.93953,12.69586],[41.93927,12.69565],[41.93904,12.69548],[41.93893,12.6954],[41.93887,12.69537],[41.93883,12.69534],[41.93886,12.69526],[41.93887,12.69522],[41.93888,12.69518],[41.93884,12.69516],[41.93878,12.69534],[41.93844,12.69517],[41.93843,12.69521],[41.93877,12.69539],[41.93877,12.69543],[41.93878,12.69547],[41.93878,12.69551],[41.93878,12.69558],[41.93878,12.69575],[41.93878,12.69607],[41.93854,12.69603],[41.93848,12.69602],[41.93843,12.69602],[41.93839,12.69601],[41.93835,12.69601],[41.93832,12.696],[41.93829,12.696],[41.93821,12.69599],[41.93812,12.69598],[41.93792,12.69601]]},{"tipo":"polygon","coords":[[41.93982,12.69625],[41.93975,12.69612],[41.93926,12.69575],[41.93882,12.69543],[41.93883,12.6961],[41.93964,12.69635],[41.93968,12.69635],[41.93974,12.69633],[41.93982,12.69625]]},{"tipo":"polygon","coords":[[41.93878,12.69614],[41.93826,12.69607],[41.93794,12.69607],[41.93843,12.6982],[41.93876,12.69962],[41.93876,12.69971],[41.93878,12.69975],[41.93884,12.69975],[41.93885,12.69971],[41.93883,12.69961],[41.9388,12.69703],[41.93878,12.69614]]},{"tipo":"line","coords":[[41.9407,12.6963],[41.93992,12.69624],[41.93976,12.69638],[41.93966,12.69641],[41.93883,12.69615],[41.93888,12.69963],[41.93887,12.69976],[41.93883,12.69979],[41.93873,12.69975],[41.93787,12.69601]]}];
+var bounds = L.latLngBounds();
+parti.forEach(function(p) {
+  var layer;
+  if (p.tipo === 'polygon') {
+    layer = L.polygon(p.coords, {color:'#00796b',fillColor:'#26a69a',fillOpacity:0.35,weight:2.5}).addTo(map);
+  } else {
+    layer = L.polyline(p.coords, {color:'#00796b',weight:5}).addTo(map);
+  }
+  bounds.extend(layer.getBounds());
+});
+if (bounds.isValid()) map.fitBounds(bounds, {padding:[30,30]});
+
+function navigaVerso() {
+  window.open('https://www.google.com/maps/dir/?api=1&destination=41.938903,12.696513', '_blank');
+}
+</script>
+</body>
+</html>

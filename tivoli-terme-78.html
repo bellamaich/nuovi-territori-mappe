@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuovo territorio 78 — TIVOLI TERME</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#00796b}
+#header{background:#00796b;color:white;padding:12px 16px;display:flex;align-items:center;gap:10px}
+#header h1{font-size:18px;font-weight:700;letter-spacing:1px}
+#header p{font-size:12px;opacity:0.8;margin-top:2px}
+#map{height:calc(100vh - 66px);width:100%}
+#nav-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00897b;color:white;border:none;border-radius:50px;padding:14px 28px;font-size:16px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+</style>
+</head>
+<body>
+<div id="header">
+  <div>
+    <h1>🗺️ TIVOLI TERME 78</h1>
+    <p>Nuovo territorio n. 78 — TIVOLI TERME</p>
+  </div>
+</div>
+<div id="map"></div>
+<button id="nav-btn" onclick="navigaVerso()">🧭 Naviga verso questo territorio</button>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var centro = [41.954899, 12.707535];
+var map = L.map('map').setView(centro, 17);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+var parti = [{"tipo":"polygon","coords":[[41.95477,12.70746],[41.95469,12.70726],[41.9546,12.70728],[41.95457,12.70751],[41.95448,12.70752],[41.95447,12.70796],[41.95461,12.70798],[41.95461,12.70813],[41.95475,12.70814],[41.95475,12.7083],[41.9548,12.7083],[41.95502,12.70813],[41.95477,12.70746]]},{"tipo":"line","coords":[[41.95442,12.70513],[41.95452,12.70571],[41.95454,12.70625],[41.95451,12.7067],[41.95463,12.70685],[41.95523,12.70836],[41.95567,12.70803]]},{"tipo":"polygon","coords":[[41.95551,12.70764],[41.95533,12.70777],[41.95546,12.70809],[41.95564,12.70796],[41.95551,12.70764]]},{"tipo":"polygon","coords":[[41.95528,12.70785],[41.95511,12.70797],[41.95523,12.70827],[41.9554,12.70814],[41.95528,12.70785]]},{"tipo":"line","coords":[[41.95506,12.70808],[41.95467,12.70715],[41.95459,12.70686],[41.95452,12.70676],[41.95447,12.70724]]}];
+var bounds = L.latLngBounds();
+parti.forEach(function(p) {
+  var layer;
+  if (p.tipo === 'polygon') {
+    layer = L.polygon(p.coords, {color:'#00796b',fillColor:'#26a69a',fillOpacity:0.35,weight:2.5}).addTo(map);
+  } else {
+    layer = L.polyline(p.coords, {color:'#00796b',weight:5}).addTo(map);
+  }
+  bounds.extend(layer.getBounds());
+});
+if (bounds.isValid()) map.fitBounds(bounds, {padding:[30,30]});
+
+function navigaVerso() {
+  window.open('https://www.google.com/maps/dir/?api=1&destination=41.954899,12.707535', '_blank');
+}
+</script>
+</body>
+</html>
